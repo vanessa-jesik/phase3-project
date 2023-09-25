@@ -1,4 +1,5 @@
-from models.__init__ import CURSOR, CONN
+from models.__init__ import CONN, CURSOR
+
 
 class Cookbook:
     all = {}
@@ -12,7 +13,7 @@ class Cookbook:
         self.day = day  # Integer for day
 
     def __repr__(self):
-        return f"<Cookbook {self.id}: {self.name}, {self.author}, {self.pub_date}>" # Year month and day gets set to pub_date on line 39
+        return f"<Cookbook {self.id}: {self.name}, {self.author}, {self.pub_date}>"  # Year month and day gets set to pub_date on line 39
 
     @property
     def name(self):
@@ -35,39 +36,38 @@ class Cookbook:
             self._author = author
         else:
             raise Exception("Author must be a string")
-        
-    @property                                                       # Creates pub_date property and sets the YYYY/MM/DD format
+
+    @property  # Creates pub_date property and sets the YYYY/MM/DD format
     def pub_date(self):
         return f"{self._year:04d}/{self._month:02d}/{self._day:02d}"
 
-    @pub_date.setter                                                # Checks all integers and formats with "/" or throws error
+    @pub_date.setter  # Checks all integers and formats with "/" or throws error
     def pub_date(self, date_str):
-        year, month, day = map(int, date_str.split('/'))
-        
+        year, month, day = map(int, date_str.split("/"))
+
         if isinstance(year, int) and isinstance(month, int) and isinstance(day, int):
             self._year = year
             self._month = month
             self._day = day
         else:
             raise Exception("Year, month, and day must be integers")
-        
 
     @classmethod
     def create_table(cls):
-        """ Create a new table to persist the attributes of Cookbook instances """
+        """Create a new table to persist the attributes of Cookbook instances"""
         sql = """
             CREATE TABLE IF NOT EXISTS cookbooks (
             id INTEGER PRIMARY KEY,
             name TEXT,
             author TEXT,
-            publishing date INTEGER)
+            pub_date INTEGER)
         """
         CURSOR.execute(sql)
         CONN.commit()
 
     @classmethod
     def drop_table(cls):
-        """ Drop the table that persists Cookbook instances """
+        """Drop the table that persists Cookbook instances"""
         sql = """
             DROP TABLE IF EXISTS cookbooks;
         """
@@ -75,7 +75,7 @@ class Cookbook:
         CONN.commit()
 
     def save(self):
-        """ Insert a new row with the name, author and pub_date values of the current Cookbook instance.
+        """Insert a new row with the name, author and pub_date values of the current Cookbook instance.
         Update object id attribute using the primary key value of new row.
         Save the object in local dictionary using table row's PK as dictionary key"""
         sql = """
@@ -91,7 +91,7 @@ class Cookbook:
 
     @classmethod
     def create(cls, name, author, pub_date):
-        """ Initialize a new Cookbook instance and save the object to the database """
+        """Initialize a new Cookbook instance and save the object to the database"""
         cookbook = cls(name, author, pub_date)
         cookbook.save()
         return cookbook
@@ -172,15 +172,19 @@ class Cookbook:
 
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
-    
-    def recipes(self):                                                  # Returns recipes from current cookbook
+
+    def recipes(self):  # Returns recipes from current cookbook
         """Return list of recipes associated with current cookbook"""
         from models.recipe import Recipe
+
         sql = """
             SELECT * FROM recipes
             WHERE cookbook_id = ?
         """
-        CURSOR.execute(sql, (self.id,),)
+        CURSOR.execute(
+            sql,
+            (self.id,),
+        )
 
         rows = CURSOR.fetchall()
         return [Recipe.instance_from_db(row) for row in rows]

@@ -1,4 +1,6 @@
 # lib/models/recipe.py
+from models.__init__ import CONN, CURSOR
+from models.cookbook import Cookbook
 
 
 class Recipe:
@@ -64,3 +66,141 @@ class Recipe:
             raise ValueError("Servings must be an integer.")
         else:
             self._servings = servings
+
+    @property
+    def cookbook_id(self):
+        return self._cookbook_id
+
+    @cookbook_id.setter
+    def cookbook_id(self, cookbook_id):
+        if not isinstance(cookbook_id, int):
+            raise ValueError("Cookbook ID must be an integer.")
+        if not Cookbook.find_by_id(cookbook_id):
+            raise ValueError("Cookbook ID must reference a cookbook in the database.")
+        else:
+            self._cookbook_id = cookbook_id
+
+    @classmethod
+    def create_table(cls):
+        """Create a new table to persist the attributes of a Recipe instances."""
+        sql = """
+            CREATE TABLE IF NOT EXISTS recipes (
+            id INTEGER PRIMARY KEY,
+            name TEXT,
+            cuisine TEXT,
+            cook_time INTEGER,
+            servings INTEGER,
+            FOREIGN KEY (cookbook_id) REFERENCES cookbooks(id))
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    @classmethod
+    def drop_table(cls):
+        """Drop the table that persists Recipe instances."""
+        sql = """
+            DROP TABLE IF EXISTS recipes
+        """
+        CURSOR.execute(sql)
+        CONN.commit()
+
+    def save(self):
+        """Insert a new row with the name, cuisine, cook time, servings,
+        and cookbook id values of the current Recipe object. Update
+        object id attribute using the primary key value of the new row.
+        Save the object in the local dictionary using table row's PK as
+        dictionary key.
+        """
+        sql = """
+            INSERT INTO recipes (name, cuisine, cook_time, servings, cookbook_id)
+            VALUES (?, ?, ?, ?, ?)
+        """
+        CURSOR.execute(
+            sql,
+            (self.name, self.cuisine, self.cook_time, self.servings, self.cookbook_id),
+        )
+        CONN.commit()
+
+        self.id = CURSOR.lastrowid
+        type(self).all[self.id] = self
+
+    def update(self):
+        """Update the table row corresponding to the current Recipe instance."""
+        sql = """
+            UPDATE recipes
+            SET name = ?, cuisine = ?, cook_time = ?, servings = ?, cookbook_id = ?
+            WHERE id = ?
+        """
+        CURSOR.execute(
+            sql,
+            (
+                self.name,
+                self.cuisine,
+                self.cook_time,
+                self.servings,
+                self.cookbook_id,
+                self.id,
+            ),
+        )
+        CONN.commit()
+        # WILL NEED TO UPDATE DICTIONARY IF GOING TO  USE DICTIONARY!!!!
+
+    def delete(self):
+        """Delete the table row corresponding to the current Recipe instance,
+        delete the dictionary entry, and reassign id attribute."""
+        sql = """
+            DELETE FROM recipes
+            WHERE id = ?
+        """
+        CURSOR.execute(sql, (self.id))
+        CONN.commit()
+
+        del type(self).all[self.id]
+        self.id = None
+
+    @classmethod
+    def create(cls, name, cuisine, cook_time, servings, cookbook_id):
+        """Initialize a new Recipe instance and save the object to the database."""
+        recipe = cls(name, cuisine, cook_time, servings, cookbook_id)
+        recipe.save()
+        return recipe
+
+    ## Should this also get saved to dictionary?
+
+    @classmethod
+    def instance_from_db(cls, row):
+        """Return a Recipe object having the attribute values from the table row."""
+        # WILL HOLD OFF ON THIS UNTIL I DECIDE IF I WANT TO USE DICTIONARY
+        pass
+
+    @classmethod
+    def get_all(cls):
+        """Return a list containing one Recipe object per table row."""
+        sql = """
+            SELECT *
+            FROM recipes
+        """
+        rows = CURSOR.execute(sql).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_id(cls, id):
+        """Return Recipe object corresponding to the table row matching the specified primary key."""
+        sql = """
+            SELECT *
+            FROM recipes
+            WHERE id = ?
+        """
+        row = CURSOR.execute(sql, (id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def find_by_name(cls, name):
+        """Return Recipe object corresponding to first table row matching specified name."""
+        sql = """
+            SELECT *
+            FROM employees
+            WHERE name is ?
+        """
+        row = CURSOR.execute(sql, (name,)).fetchone()
+        return cls.instance_from_db(row) if row else None

@@ -18,7 +18,7 @@ class Recipe:
         return (
             f"<Recipe {self.id}: {self.name} | Cuisine: {self.cuisine} "
             + f"| Cook time: {self.cook_time} minutes | Serves: {self.servings} "
-            + f"| Cookbook ID: {self.cookbook_id}"
+            + f"| Cookbook ID: {self.cookbook_id}>"
         )
 
     @property

@@ -90,6 +90,7 @@ class Recipe:
             cuisine TEXT,
             cook_time INTEGER,
             servings INTEGER,
+            cookbook_id INTEGER,
             FOREIGN KEY (cookbook_id) REFERENCES cookbooks(id))
         """
         CURSOR.execute(sql)

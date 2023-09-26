@@ -132,15 +132,24 @@ def find_recipes_by_cook_time_parameters():
         print(f"No recipes taking fewer than {minutes} minutes to cook were found.")
 
 
+def get_num(message):
+    try:
+        return int(input(message))
+    except:
+        print("Not a valid number.")
+        return get_num(message)
+
+
 # IS THIS THE BEST WAY TO ASSURE INTEGERS BECAUSE THROWS ERROR IF USER INPUTS LETTERS
 def create_recipe():
     name = input("Enter the recipe's name: ")
     cuisine = input("Enter the recipe's cuisine type: ")
-    cook_time = int(input("Enter the recipe's cook time in minutes: "))
-    servings = int(input("Enter how many the recipe serves: "))
-    cookbook_id = int(
-        input("Enter the ID of the cookbook in which the recipe is published: ")
+    cook_time = get_num("Enter the recipe's cook time in minutes: ")
+    servings = get_num("Enter how many the recipe serves: ")
+    cookbook_id = get_num(
+        "Enter the ID of the cookbook in which the recipe is published: "
     )
+
     try:
         recipe = Recipe.create(name, cuisine, cook_time, servings, cookbook_id)
         print(f"Success: {recipe}")

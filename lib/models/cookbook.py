@@ -11,7 +11,7 @@ class Cookbook:
         self.pub_date = f"{year:04d}/{month:02d}/{day:02d}"
 
     def __repr__(self):
-        return f"<Cookbook {self.id}: \n{self.name}, \nBy: {self.author}, \nPublished on: {self.pub_date}>"
+        return f"<Cookbook {self.id}: {self.name} \nBy: {self.author} \nPublished on: {self.pub_date}>" 
 
     @property
     def name(self):
@@ -158,6 +158,18 @@ class Cookbook:
         row = CURSOR.execute(sql, (id,)).fetchone()
         return cls.instance_from_db(row) if row else None
 
+    @classmethod
+    def find_by_author(cls, author):
+        """Return a Cookbook object corresponding to first table row matching specified author"""
+        sql = """
+            SELECT *
+            FROM cookbooks
+            WHERE author is ?
+        """
+
+        row = CURSOR.execute(sql, (author,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
     @classmethod
     def find_by_name(cls, name):
         """Return a Cookbook object corresponding to first table row matching specified name"""

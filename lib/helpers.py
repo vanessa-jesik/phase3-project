@@ -14,25 +14,23 @@ def list_cookbooks():
         print(cookbook)
 
 
-def find_cookbook_by_name():    # Need to enter the entire name
+def find_cookbook_by_name():  # Need to enter the entire name
     name = input("Enter the Cookbooks's name: ").lower()
     cookbook = Cookbook.find_by_name(name)
-    print(cookbook) if cookbook else print(
-        f'Cookbook {name} not found')
+    print(cookbook) if cookbook else print(f"Cookbook {name} not found")
 
 
 def find_cookbook_by_author():  # Need to enter the entire name
     author = input("Enter the Author's name: ").lower()
     cookbook = Cookbook.find_by_author(author)
-    print(cookbook) if cookbook else print(
-        f'Cookbook by {author} not found')
+    print(cookbook) if cookbook else print(f"Cookbook by {author} not found")
 
 
 def find_cookbook_by_id():
     try:
         id_ = int(input("Enter the Cookbook's id: "))
         cookbook = Cookbook.find_by_id(id_)
-        print(cookbook) if cookbook else print(f'Cookbook {id_} not found')
+        print(cookbook) if cookbook else print(f"Cookbook {id_} not found")
     except Exception:
         print("Cookbook id has to be an integer.")
 
@@ -45,7 +43,7 @@ def create_cookbook():
     day = int(input("Enter the Cookbook's publishing day: "))
     try:
         cookbook = Cookbook.create(name, author, year, month, day)
-        print(f'Success: {cookbook}')
+        print(f"Success: {cookbook}")
     except Exception as exc:
         print("Error creating cookbook: ", exc)
 
@@ -66,20 +64,20 @@ def update_cookbook():
             cookbook.day = day
 
             cookbook.update()
-            print(f'Success: {cookbook}')
+            print(f"Success: {cookbook}")
         except Exception as exc:
             print("Error updating cookbook: ", exc)
     else:
-        print(f'cookbook {id_} not found')
+        print(f"cookbook {id_} not found")
 
 
 def delete_cookbook():
     id_ = input("Enter the Cookbook's id: ")
     if cookbook := Cookbook.find_by_id(id_):
         cookbook.delete()
-        print(f'Cookbook {id_} deleted')
+        print(f"Cookbook {id_} deleted")
     else:
-        print(f'Cookbook {id_} not found')
+        print(f"Cookbook {id_} not found")
 
 
 def list_recipes():
@@ -87,7 +85,7 @@ def list_recipes():
     for recipe in recipes:
         print(recipe)
 
-        
+
 # Would be nice to make not case-sensitive and have partials work
 def find_recipe_by_name():
     name = input("Enter the recipe's name: ")
@@ -105,8 +103,9 @@ def find_recipe_by_id():
 def find_recipes_by_cuisine():
     cuisine = input("Enter a cuisine type: ")
     recipes = Recipe.find_by_cuisine(cuisine)
-    for recipe in recipes:
-        print(recipe)
+    if recipes:
+        for recipe in recipes:
+            print(recipe)
     else:
         print(f"Recipes of type {cuisine} not found.")
 
@@ -114,8 +113,9 @@ def find_recipes_by_cuisine():
 def find_recipes_by_servings():
     servings = input("Enter desired servings: ")
     recipes = Recipe.find_by_servings(servings)
-    for recipe in recipes:
-        print(recipe)
+    if recipes:
+        for recipe in recipes:
+            print(recipe)
     else:
         print(f"Recipes serving {servings} not found.")
 
@@ -125,8 +125,9 @@ def find_recipes_by_cook_time_parameters():
         "Find recipes taking fewer than ___ minutes to cook. Enter minutes: "
     )
     recipes = Recipe.find_by_time(minutes)
-    for recipe in recipes:
-        print(recipe)
+    if recipes:
+        for recipe in recipes:
+            print(recipe)
     else:
         print(f"No recipes taking fewer than {minutes} minutes to cook were found.")
 

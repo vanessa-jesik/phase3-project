@@ -144,7 +144,6 @@ class Recipe:
             ),
         )
         CONN.commit()
-        # WILL NEED TO UPDATE DICTIONARY IF GOING TO  USE DICTIONARY!!!!
 
     def delete(self):
         """Delete the table row corresponding to the current Recipe instance,

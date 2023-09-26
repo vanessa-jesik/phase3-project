@@ -11,7 +11,7 @@ class Cookbook:
         self.pub_date = f"{year:04d}/{month:02d}/{day:02d}"
 
     def __repr__(self):
-        return f"<Cookbook {self.id}: {self.name}, {self.author}, {self.pub_date}>" 
+        return f"<Cookbook {self.id}: {self.name}, {self.author}, {self.pub_date}>"
 
     @property
     def name(self):
@@ -35,11 +35,11 @@ class Cookbook:
         else:
             raise Exception("Author must be a string")
 
-    @property 
+    @property
     def pub_date(self):
         return self._pub_date
 
-    @pub_date.setter  
+    @pub_date.setter
     def pub_date(self, date_str):
         year, month, day = map(int, date_str.split("/"))
 
@@ -88,7 +88,7 @@ class Cookbook:
     @classmethod
     def create(cls, name, author, year, month, day):
         """Initialize a new Cookbook instance and save the object to the database"""
-        cookbook = cls(name, author,year, month, day)
+        cookbook = cls(name, author, year, month, day)
         cookbook.save()
         return cookbook
 
@@ -121,14 +121,16 @@ class Cookbook:
     @classmethod
     def instance_from_db(cls, row):
         """Return a Cookbook object having the attribute values from the table row."""
-
         cookbook = cls.all.get(row[0])
         if cookbook:
             cookbook.name = row[1]
             cookbook.author = row[2]
             cookbook.pub_date = row[3]
         else:
-            cookbook = cls(row[1], row[2], row[3])
+            date_values = [int(num) for num in row[3].split("/")]
+            cookbook = cls(
+                row[1], row[2], date_values[0], date_values[1], date_values[2]
+            )
             cookbook.id = row[0]
             cls.all[cookbook.id] = cookbook
         return cookbook
@@ -142,7 +144,6 @@ class Cookbook:
         """
 
         rows = CURSOR.execute(sql).fetchall()
-
         return [cls.instance_from_db(row) for row in rows]
 
     @classmethod

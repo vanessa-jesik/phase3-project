@@ -159,6 +159,18 @@ class Cookbook:
         return cls.instance_from_db(row) if row else None
 
     @classmethod
+    def find_by_author(cls, author):
+        """Return a Cookbook object corresponding to first table row matching specified author"""
+        sql = """
+            SELECT *
+            FROM cookbooks
+            WHERE author is ?
+        """
+
+        row = CURSOR.execute(sql, (author,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
     def find_by_name(cls, name):
         """Return a Cookbook object corresponding to first table row matching specified name"""
         sql = """

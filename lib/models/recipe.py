@@ -29,8 +29,8 @@ class Recipe:
     def name(self, name):
         if not isinstance(name, str):
             raise ValueError("Name must be a string.")
-        if not 3 <= len(name) <= 16:
-            raise ValueError("Name must be between 3 and 16 characters, inclusive.")
+        if not 3 <= len(name) <= 40:
+            raise ValueError("Name must be between 3 and 40 characters, inclusive.")
         else:
             self._name = name
 
@@ -82,7 +82,7 @@ class Recipe:
 
     @classmethod
     def create_table(cls):
-        """Create a new table to persist the attributes of a Recipe instances."""
+        """Create a new table to persist the attributes of Recipe instances."""
         sql = """
             CREATE TABLE IF NOT EXISTS recipes (
             id INTEGER PRIMARY KEY,
@@ -153,7 +153,7 @@ class Recipe:
             DELETE FROM recipes
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.id))
+        CURSOR.execute(sql, (self.id,))
         CONN.commit()
 
         del type(self).all[self.id]
@@ -166,13 +166,24 @@ class Recipe:
         recipe.save()
         return recipe
 
-    ## Should this also get saved to dictionary?
-
     @classmethod
     def instance_from_db(cls, row):
         """Return a Recipe object having the attribute values from the table row."""
-        # WILL HOLD OFF ON THIS UNTIL I DECIDE IF I WANT TO USE DICTIONARY
-        pass
+        # Check the dictionary for  existing instance using the row's primary key
+        recipe = cls.all.get(row[0])
+        if recipe:
+            # Ensure attributes match row values in case local instance was modified
+            recipe.name = row[1]
+            recipe.cuisine = row[2]
+            recipe.cook_time = row[3]
+            recipe.servings = row[4]
+            recipe.cookbook_id = row[5]
+        else:
+            # If not in dictionary, create new instance and add to dictionary
+            recipe = cls(row[1], row[2], row[3], row[4], row[5])
+            recipe.id = row[0]
+            cls.all[recipe.id] = recipe
+        return recipe
 
     @classmethod
     def get_all(cls):

@@ -8,12 +8,10 @@ class Cookbook:
         self.id = id
         self.name = name
         self.author = author
-        self.year = year  # Integer for year
-        self.month = month  # Integer for month
-        self.day = day  # Integer for day
+        self.pub_date = f"{year:04d}/{month:02d}/{day:02d}"
 
     def __repr__(self):
-        return f"<Cookbook {self.id}: {self.name}, {self.author}, {self.pub_date}>"  # Year month and day gets set to pub_date on line 39
+        return f"<Cookbook {self.id}: {self.name}, {self.author}, {self.pub_date}>" 
 
     @property
     def name(self):
@@ -37,18 +35,16 @@ class Cookbook:
         else:
             raise Exception("Author must be a string")
 
-    @property  # Creates pub_date property and sets the YYYY/MM/DD format
+    @property 
     def pub_date(self):
-        return f"{self._year:04d}/{self._month:02d}/{self._day:02d}"
+        return self._pub_date
 
-    @pub_date.setter  # Checks all integers and formats with "/" or throws error
+    @pub_date.setter  
     def pub_date(self, date_str):
         year, month, day = map(int, date_str.split("/"))
 
         if isinstance(year, int) and isinstance(month, int) and isinstance(day, int):
-            self._year = year
-            self._month = month
-            self._day = day
+            self._pub_date = date_str
         else:
             raise Exception("Year, month, and day must be integers")
 
@@ -60,7 +56,7 @@ class Cookbook:
             id INTEGER PRIMARY KEY,
             name TEXT,
             author TEXT,
-            pub_date INTEGER)
+            pub_date TEXT)
         """
         CURSOR.execute(sql)
         CONN.commit()
@@ -90,9 +86,9 @@ class Cookbook:
         type(self).all[self.id] = self
 
     @classmethod
-    def create(cls, name, author, pub_date):
+    def create(cls, name, author, year, month, day):
         """Initialize a new Cookbook instance and save the object to the database"""
-        cookbook = cls(name, author, pub_date)
+        cookbook = cls(name, author,year, month, day)
         cookbook.save()
         return cookbook
 

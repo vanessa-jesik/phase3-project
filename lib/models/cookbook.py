@@ -11,7 +11,7 @@ class Cookbook:
         self.pub_date = f"{year:04d}/{month:02d}/{day:02d}"
 
     def __repr__(self):
-        return f"<Cookbook {self.id}: {self.name}, {self.author}, {self.pub_date}>"
+        return f"<Cookbook {self.id}: \n{self.name}, \nBy: {self.author}, \nPublished on: {self.pub_date}>"
 
     @property
     def name(self):

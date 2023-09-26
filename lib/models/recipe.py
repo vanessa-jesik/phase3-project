@@ -210,8 +210,41 @@ class Recipe:
         """Return Recipe object corresponding to first table row matching specified name."""
         sql = """
             SELECT *
-            FROM employees
+            FROM recipes
             WHERE name is ?
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
+
+    @classmethod
+    def find_by_cuisine(cls, cuisine):
+        """Return all Recipe objects matching a specified cuisine type."""
+        sql = """
+            SELECT *
+            FROM recipes
+            WHERE cuisine is ?
+        """
+        rows = CURSOR.execute(sql, (cuisine,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_servings(cls, servings):
+        """Return all Recipe objects matching the specified number of servings."""
+        sql = """
+            SELECT *
+            FROM recipes
+            WHERE servings is ?
+        """
+        rows = CURSOR.execute(sql, (servings,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
+
+    @classmethod
+    def find_by_time(cls, minutes):
+        """Return all Recipe objects requiring fewer than the specified number of minutes to cook."""
+        sql = """
+            SELECT *
+            FROM recipes
+            WHERE cook_time < ?
+        """
+        rows = CURSOR.execute(sql, (minutes,)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]

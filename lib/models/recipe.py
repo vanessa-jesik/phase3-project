@@ -29,8 +29,8 @@ class Recipe:
     def name(self, name):
         if not isinstance(name, str):
             raise ValueError("Name must be a string.")
-        if not 3 <= len(name) <= 40:
-            raise ValueError("Name must be between 3 and 40 characters, inclusive.")
+        if not len(name):
+            raise ValueError("Name must be a non-empty string.")
         else:
             self._name = name
 
@@ -40,7 +40,9 @@ class Recipe:
 
     @cuisine.setter
     def cuisine(self, cuisine):
-        if not isinstance(cuisine, str) and len(cuisine):
+        if not isinstance(cuisine, str):
+            raise ValueError("Cuisine must a string.")
+        if not len(cuisine):
             raise ValueError("Cuisine must be a non-empty string.")
         else:
             self._cuisine = cuisine
@@ -213,7 +215,7 @@ class Recipe:
             FROM recipes
             WHERE name LIKE ?
         """
-        row = CURSOR.execute(sql, (f"%{name}%",)).fetchone()
+        row = CURSOR.execute(sql, (f"%{name}%",)).fetchall()
         return cls.instance_from_db(row) if row else None
 
     @classmethod

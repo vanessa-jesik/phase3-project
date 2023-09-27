@@ -22,7 +22,7 @@ class Cookbook:
         if isinstance(name, str) and len(name):
             self._name = name
         else:
-            raise Exception("Name must be a string")
+            raise Exception("Name must be a non-empty string")
 
     @property
     def author(self):
@@ -33,7 +33,7 @@ class Cookbook:
         if isinstance(author, str) and len(author):
             self._author = author
         else:
-            raise Exception("Author must be a string")
+            raise Exception("Author must be a non-empty string")
 
     @property
     def pub_date(self):
@@ -167,7 +167,7 @@ class Cookbook:
             WHERE author LIKE ?
         """
 
-        row = CURSOR.execute(sql, (f"%{author}%",)).fetchone()
+        row = CURSOR.execute(sql, (f"%{author}%",)).fetchall()
         return cls.instance_from_db(row) if row else None
 
     @classmethod

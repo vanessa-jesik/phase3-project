@@ -14,34 +14,38 @@ def list_cookbooks():
         print(cookbook)
 
 
-
 def find_cookbooks_by_name():
     name = input("Input to search cookbooks by name: ")
-    cookbooks = Cookbook.find_by_name(name)
-    if cookbooks:
-        for cookbook in cookbooks:
-            print(cookbook)
+    if name:
+        cookbooks = Cookbook.find_by_name(name)
+        if cookbooks:
+            for cookbook in cookbooks:
+                print(cookbook)
+        else:
+            print(f"Cookbook name containing {name} not found")
     else:
-        print(f"Cookbook name containing {name} not found")
+        print("Search entry cannot be empty.")
 
 
 def find_cookbooks_by_author():
     author = input("Enter the Author's name: ")
-    cookbooks = Cookbook.find_by_author(author)
-    if cookbooks:
-        for cookbook in cookbooks:
-            print(cookbook)
+    if author:
+        cookbooks = Cookbook.find_by_author(author)
+        if cookbooks:
+            for cookbook in cookbooks:
+                print(cookbook)
+        else:
+            print(f"Cookbooks by {author} not found")
     else:
-        print(f"Cookbooks by {author} not found")
+        print("Search entry cannot be empty.")
 
 
 def find_cookbook_by_id():
-    try:
-        id_ = int(input("Enter the Cookbook's id: "))
-        cookbook = Cookbook.find_by_id(id_)
-        print(cookbook) if cookbook else print(f"Cookbook {id_} not found. Please enter vaild integer from database.")
-    except Exception:
-        print("Cookbook id has to be an integer.")
+    id_ = get_num("Enter the Cookbook's id: ")
+    cookbook = Cookbook.find_by_id(id_)
+    print(cookbook) if cookbook else print(
+        f"Cookbook {id_} not found. ID must reference a cookbook in the database."
+    )
 
 
 def create_cookbook():
@@ -58,7 +62,7 @@ def create_cookbook():
 
 
 def update_cookbook():
-    id_ = input("Enter the Cookbook's id: ")
+    id_ = get_num("Enter the id of the Cookbook to update: ")
     if cookbook := Cookbook.find_by_id(id_):
         try:
             name = input("Enter the Cookbook's new name: ")
@@ -74,16 +78,20 @@ def update_cookbook():
         except Exception as exc:
             print("Error updating cookbook: ", exc)
     else:
-        print(f"cookbook {id_} not found")
+        print(
+            f"Cookbook {id_} not found. ID must reference a cookbook in the database."
+        )
 
 
 def delete_cookbook():
-    id_ = input("Enter the Cookbook's id: ")
+    id_ = get_num("Enter the id of the Cookbook to delete: ")
     if cookbook := Cookbook.find_by_id(id_):
         cookbook.delete()
         print(f"Cookbook {id_} deleted")
     else:
-        print(f"Cookbook {id_} not found")
+        print(
+            f"Cookbook {id_} not found. ID must reference a cookbook in the database."
+        )
 
 
 def list_recipes():
@@ -94,19 +102,22 @@ def list_recipes():
 
 def find_recipes_by_name():
     name = input("Input to search recipes by name: ")
-    recipes = Recipe.find_by_name(name)
-    if recipes:
-        for recipe in recipes:
-            print(recipe)
+    if name:
+        recipes = Recipe.find_by_name(name)
+        if recipes:
+            for recipe in recipes:
+                print(recipe)
+        else:
+            print(f"Recipe name containing {name} not found.")
     else:
-        print(f"Recipe name containing {name} not found.")
+        print("Search entry cannot be empty.")
 
 
 def find_recipe_by_id():
-    id_ = input("Enter the recipe's ID: ")
+    id_ = get_num("Enter the recipe's ID: ")
     recipe = Recipe.find_by_id(id_)
     print(recipe) if recipe else print(
-        f"Recipe {id_} not found. Please enter valid ID from database - must be an integer."
+        f"Recipe {id_} not found. ID must reference a recipe in the database."
     )
 
 
@@ -121,7 +132,7 @@ def find_recipes_by_cuisine():
 
 
 def find_recipes_by_servings():
-    servings = input("Enter desired number of servings: ")
+    servings = get_num("Enter desired number of servings: ")
     recipes = Recipe.find_by_servings(servings)
     if recipes:
         for recipe in recipes:
@@ -167,7 +178,7 @@ def create_recipe():
 
 
 def update_recipe():
-    id_ = input("Enter the recipe's ID: ")
+    id_ = get_num("Enter the ID of the recipe to update: ")
     if recipe := Recipe.find_by_id(id_):
         try:
             name = input("Enter the recipe's new name: ")
@@ -187,26 +198,24 @@ def update_recipe():
         except Exception as exc:
             print("Error updating recipe: ", exc)
     else:
-        print(
-            f"Recipe {id_} not found. Please enter valid ID from database - must be an integer."
-        )
+        print(f"Recipe {id_} not found. ID must reference a recipe in the database.")
 
 
 def delete_recipe():
-    id_ = input("Enter the recipe's ID: ")
+    id_ = get_num("Enter the ID of the recipe to delete: ")
     if recipe := Recipe.find_by_id(id_):
         recipe.delete()
         print(f"Recipe {id_} deleted.")
     else:
-        print(
-            f"Recipe {id_} not found. Please enter valid ID from database - must be an integer."
-        )
+        print(f"Recipe {id_} not found. ID must reference a recipe in the database.")
 
 
 def list_cookbook_recipes():
-    id_ = input("Enter the cookbook's ID: ")
+    id_ = get_num("Enter the cookbook's ID: ")
     if cookbook := Cookbook.find_by_id(id_):
         for recipe in cookbook.recipes():
             print(recipe)
     else:
-        print(f"Cookbook {id_} not found.")
+        print(
+            f"Cookbook {id_} not found. ID must reference a cookbook in the database."
+        )

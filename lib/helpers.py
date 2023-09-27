@@ -17,20 +17,20 @@ def list_cookbooks():
 def find_cookbook_by_name():
     name = input("Enter the Cookbooks's name: ")
     cookbook = Cookbook.find_by_name(name)
-    print(cookbook) if cookbook else print(f"Cookbook {name} not found")
+    print(cookbook) if cookbook else print(f"Cookbook {name} not found. Please enter a vaild Name from the database.")
 
 
 def find_cookbook_by_author():
     author = input("Enter the Author's name: ")
     cookbook = Cookbook.find_by_author(author)
-    print(cookbook) if cookbook else print(f"Cookbook by {author} not found")
+    print(cookbook) if cookbook else print(f"Cookbook by {author} not found. Please enter a vaild Author from the database.")
 
 
 def find_cookbook_by_id():
     try:
         id_ = int(input("Enter the Cookbook's id: "))
         cookbook = Cookbook.find_by_id(id_)
-        print(cookbook) if cookbook else print(f"Cookbook {id_} not found")
+        print(cookbook) if cookbook else print(f"Cookbook {id_} not found. Please enter vaild integer from database.")
     except Exception:
         print("Cookbook id has to be an integer.")
 
@@ -38,9 +38,9 @@ def find_cookbook_by_id():
 def create_cookbook():
     name = input("Enter the Cookbook's name: ")
     author = input("Enter the Cookbook's author: ")
-    year = int(input("Enter the Cookbook's publishing year: "))
-    month = int(input("Enter the Cookbook's publishing month: "))
-    day = int(input("Enter the Cookbook's publishing day: "))
+    year = get_num("Enter the Cookbook's publishing year: ")
+    month = get_num("Enter the Cookbook's publishing month: ")
+    day = get_num("Enter the Cookbook's publishing day: ")
     try:
         cookbook = Cookbook.create(name, author, year, month, day)
         print(f"Success: {cookbook}")
@@ -56,9 +56,9 @@ def update_cookbook():
             cookbook.name = name
             author = input("Enter the Cookbook's new author: ")
             cookbook.author = author
-            year = int(input("Enter the Cookbook's new publishing year: "))
-            month = int(input("Enter the Cookbook's new publishing month: "))
-            day = int(input("Enter the Cookbook's new publishing day: "))
+            year = get_num("Enter the Cookbook's new publishing year: ")
+            month = get_num("Enter the Cookbook's new publishing month: ")
+            day = get_num("Enter the Cookbook's new publishing day: ")
             cookbook.pub_date = f"{year:04d}/{month:02d}/{day:02d}"
             cookbook.update()
             print(f"Success: {cookbook}")

@@ -6,13 +6,13 @@ from helpers import (
     delete_cookbook,
     delete_recipe,
     exit_program,
-    find_cookbook_by_author,
     find_cookbook_by_id,
-    find_cookbook_by_name,
+    find_cookbooks_by_author,
+    find_cookbooks_by_name,
     find_recipe_by_id,
-    find_recipe_by_name,
     find_recipes_by_cook_time_parameters,
     find_recipes_by_cuisine,
+    find_recipes_by_name,
     find_recipes_by_servings,
     list_cookbook_recipes,
     list_cookbooks,
@@ -25,15 +25,15 @@ from helpers import (
 def main():
     while True:
         menu()
-        choice = input("> ")
+        choice = input("Select number from menu: ")
         if choice == "0":
             exit_program()
         elif choice == "1":
             list_cookbooks()
         elif choice == "2":
-            find_cookbook_by_name()
+            find_cookbooks_by_name()
         elif choice == "3":
-            find_cookbook_by_author()
+            find_cookbooks_by_author()
         elif choice == "4":
             find_cookbook_by_id()
         elif choice == "5":
@@ -45,7 +45,7 @@ def main():
         elif choice == "8":
             list_recipes()
         elif choice == "9":
-            find_recipe_by_name()
+            find_recipes_by_name()
         elif choice == "10":
             find_recipe_by_id()
         elif choice == "11":
@@ -70,14 +70,14 @@ def menu():
     print("Please select an option:")
     print("0. Exit the program")
     print("1. List all cookbooks")
-    print("2. Find cookbook by name")
-    print("3. Find cookbook by author")
+    print("2. Find cookbooks by name")
+    print("3. Find cookbooks by author")
     print("4: Find cookbook by id")
     print("5: Create cookbook")
     print("6: Update cookbook")
     print("7. Delete cookbook")
     print("8. List all recipes")
-    print("9. Find recipe by name")
+    print("9. Find recipes by name")
     print("10: Find recipe by id")
     print("11: Find recipes by cuisine")
     print("12: Find recipes by servings")

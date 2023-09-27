@@ -215,8 +215,8 @@ class Recipe:
             FROM recipes
             WHERE name LIKE ?
         """
-        row = CURSOR.execute(sql, (f"%{name}%",)).fetchall()
-        return cls.instance_from_db(row) if row else None
+        rows = CURSOR.execute(sql, (f"%{name}%",)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
 
     @classmethod
     def find_by_cuisine(cls, cuisine):

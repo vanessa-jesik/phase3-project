@@ -167,8 +167,8 @@ class Cookbook:
             WHERE author LIKE ?
         """
 
-        row = CURSOR.execute(sql, (f"%{author}%",)).fetchall()
-        return cls.instance_from_db(row) if row else None
+        rows = CURSOR.execute(sql, (f"%{author}%",)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
 
     @classmethod
     def find_by_name(cls, name):
@@ -179,8 +179,8 @@ class Cookbook:
             WHERE name LIKE ?
         """
 
-        row = CURSOR.execute(sql, (f"%{name}%",)).fetchone()
-        return cls.instance_from_db(row) if row else None
+        rows = CURSOR.execute(sql, (f"%{name}%",)).fetchall()
+        return [cls.instance_from_db(row) for row in rows]
 
     def recipes(self):  # Returns recipes from current cookbook
         """Return list of recipes associated with current cookbook"""

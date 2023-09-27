@@ -54,8 +54,8 @@ class Cookbook:
         sql = """
             CREATE TABLE IF NOT EXISTS cookbooks (
             id INTEGER PRIMARY KEY,
-            name TEXT,
-            author TEXT,
+            name TEXT COLLATE NOCASE,
+            author TEXT COLLATE NOCASE,
             pub_date TEXT)
         """
         CURSOR.execute(sql)
@@ -164,10 +164,10 @@ class Cookbook:
         sql = """
             SELECT *
             FROM cookbooks
-            WHERE author is ?
+            WHERE author LIKE ?
         """
 
-        row = CURSOR.execute(sql, (author,)).fetchone()
+        row = CURSOR.execute(sql, (f"%{author}%",)).fetchone()
         return cls.instance_from_db(row) if row else None
 
     @classmethod
@@ -176,10 +176,10 @@ class Cookbook:
         sql = """
             SELECT *
             FROM cookbooks
-            WHERE name is ?
+            WHERE name LIKE ?
         """
 
-        row = CURSOR.execute(sql, (name,)).fetchone()
+        row = CURSOR.execute(sql, (f"%{name}%",)).fetchone()
         return cls.instance_from_db(row) if row else None
 
     def recipes(self):  # Returns recipes from current cookbook

@@ -86,8 +86,8 @@ class Recipe:
         sql = """
             CREATE TABLE IF NOT EXISTS recipes (
             id INTEGER PRIMARY KEY,
-            name TEXT,
-            cuisine TEXT,
+            name TEXT COLLATE NOCASE,
+            cuisine TEXT COLLATE NOCASE,
             cook_time INTEGER,
             servings INTEGER,
             cookbook_id INTEGER,
@@ -211,9 +211,9 @@ class Recipe:
         sql = """
             SELECT *
             FROM recipes
-            WHERE name is ?
+            WHERE name LIKE ?
         """
-        row = CURSOR.execute(sql, (name,)).fetchone()
+        row = CURSOR.execute(sql, (f"%{name}%",)).fetchone()
         return cls.instance_from_db(row) if row else None
 
     @classmethod

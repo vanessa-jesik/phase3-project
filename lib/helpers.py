@@ -20,7 +20,7 @@ def find_cookbook_by_name():
     print(cookbook) if cookbook else print(f"Cookbook {name} not found")
 
 
-def find_cookbook_by_author():  # Need to enter the entire name
+def find_cookbook_by_author():
     author = input("Enter the Author's name: ")
     cookbook = Cookbook.find_by_author(author)
     print(cookbook) if cookbook else print(f"Cookbook by {author} not found")

@@ -57,12 +57,9 @@ def update_cookbook():
             author = input("Enter the Cookbook's new author: ")
             cookbook.author = author
             year = int(input("Enter the Cookbook's new publishing year: "))
-            cookbook.year = year
             month = int(input("Enter the Cookbook's new publishing month: "))
-            cookbook.month = month
             day = int(input("Enter the Cookbook's new publishing day: "))
-            cookbook.day = day
-
+            cookbook.pub_date = f"{year:04d}/{month:02d}/{day:02d}"
             cookbook.update()
             print(f"Success: {cookbook}")
         except Exception as exc:
@@ -89,7 +86,7 @@ def list_recipes():
 def find_recipe_by_name():
     name = input("Enter the recipe's name: ")
     recipe = Recipe.find_by_name(name)
-    print(recipe) if recipe else print(f"Recipe {name} not found.")
+    print(recipe) if recipe else print(f"Recipe name containing {name} not found.")
 
 
 def find_recipe_by_id():

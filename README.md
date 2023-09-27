@@ -1,172 +1,92 @@
-# Phase 3 CLI+ORM Project Template
+# Cookbook and Recipe Management System
 
-## Learning Goals
+This Cookbook and Recipe Management System is a Python-based application that allows users to manage cookbooks and recipes. It provides a command-line interface (CLI) for performing various operations, such as creating, updating, and deleting cookbooks and recipes, as well as searching for specific cookbooks and recipes based on different criteria.
 
-- Discuss the basic directory structure of a CLI.
-- Outline the first steps in building a CLI.
+## Table of Contents
 
----
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [CLI Commands](#cli-commands)
+- [Project Structure](#project-structure)
+- [Database](#database)
+- [Seed Data](#seed-data)
+- [Contributing](#contributing)
 
-## Introduction
+## Features
 
-You now have a basic idea of what constitutes a CLI. Fork and clone this lesson
-for a project template for your CLI.
+- **Cookbook Management**: Users can create, update, list, and delete cookbooks.
+- **Recipe Management**: Users can create, update, list, and delete recipes associated with cookbooks.
+- **Search Functionality**: Users can search for cookbooks and recipes by name, author, ID, cuisine, servings, and cook time.
+- **Data Persistence**: Data is stored in an SQLite database, allowing for data persistence between sessions.
+- **Sample Data**: The system includes seed data with predefined cookbooks and recipes for testing.
 
-Take a look at the directory structure:
+## Getting Started
 
-```console
-.
-├── Pipfile
-├── Pipfile.lock
-├── README.md
-└── lib
-    ├── models
-    │   ├── __init__.py
-    │   └── model_1.py
-    ├── cli.py
-    ├── debug.py
-    └── helpers.py
-```
+### Prerequisites
 
-Note: The directory also includes two files named `CONTRIBUTING.md` and
-`LICENSE.md` that are specific to Flatiron's curriculum. You can disregard or
-delete the files if you want.
+Before running the project, ensure you have the following prerequisites installed:
 
----
+- Python 3
+- SQLite (for database storage)
 
-## Generating Your Environment
+### Installation
 
-You might have noticed in the file structure- there's already a Pipfile!
+1. Clone the repository to your local machine
+2. Change into the project directory
+3. Install the required Python packages
+4. Enter Python Shell
 
-Install any additional dependencies you know you'll need for your project by
-adding them to the `Pipfile`. Then run the commands:
+## Usage
 
-```console
-pipenv install
-pipenv shell
-```
+To use the Cookbook and Recipe Management System, follow these steps:
 
----
+1. Run the seed.py script to initialize the database with sample data:
+    - python seed.py
+2. Run the CLI interface to interact with the system:
+    - python cli.py
 
-## Generating Your CLI
+### CLI Commands
 
-A CLI is, simply put, an interactive script and prompts the user and performs
-operations based on user input.
+The CLI provides the following commands:
 
-The project template has a sample CLI in `lib/cli.py` that looks like this:
+- **List all cookbooks**: List all cookbooks in the system.
+- **Find cookbooks by name**: Find a cookbook by its name.
+- **Find cookbooks by author**: Find cookbooks by the author's name.
+- **Find cookbook by ID**: Find a cookbook by its unique identifier.
+- **Create cookbook**: Create a new cookbook by providing its name, author, and publishing date.
+- **Update cookbook**: Update the details of an existing cookbook.
+- **Delete cookbook**: Delete a cookbook from the system.
+- **List all recipes**: List all recipes in the system.
+- **Find recipes by name**: Find a recipe by its name.
+- **Find recipe by ID**: Find a recipe by its unique identifier.
+- **Find recipes by cuisine**: Find recipes by cuisine type.
+- **Find recipes by servings**: Find recipes by the number of servings.
+- **Find recipes by cook time parameters**: Find recipes based on specific cooking time parameters.
+- **Create recipe**: Create a new recipe by providing its name, cuisine, cook time, servings, and associated cookbook ID.
+- **Update recipe**: Update the details of an existing recipe.
+- **Delete recipe**: Delete a recipe from the system.
+- **List all recipes in a cookbook**: List all recipes associated with a specific cookbook.
+- **Exit the program**: Terminate the CLI application.
 
-```py
-# lib/cli.py
+## Project Structure
 
-from helpers import (
-    exit_program,
-    helper_1
-)
+The project is organized into the following modules:
 
+- `models`: Contains the Cookbook and Recipe classes that define the database schema.
+- `lib`: Contains the Python scripts used for various functionalities.
+- `seed.py`: Initializes the database with sample data.
 
-def main():
-    while True:
-        menu()
-        choice = input("> ")
-        if choice == "0":
-            exit_program()
-        elif choice == "1":
-            helper_1()
-        else:
-            print("Invalid choice")
+## Database
 
+The application uses an SQLite database to persist cookbook and recipe data. The database schema is defined by the Cookbook and Recipe classes in the `models` module.
 
-def menu():
-    print("Please select an option:")
-    print("0. Exit the program")
-    print("1. Some useful function")
+## Seed Data
 
+The `seed.py` script populates the database with initial data, including predefined cookbooks and recipes. This data can be used for testing and demonstration purposes.
 
-if __name__ == "__main__":
-    main()
-```
+## Contributing
 
-The helper functions are located in `lib/helpers.py`:
-
-```py
-# lib/helpers.py
-
-def helper_1():
-    print("Performing useful function#1.")
-
-
-def exit_program():
-    print("Goodbye!")
-    exit()
-```
-
-You can run the template CLI with `python lib/cli.py`, or include the shebang
-and make it executable with `chmod +x`. The template CLI will ask for input, do
-some work, and accomplish some sort of task.
-
-Past that, CLIs can be whatever you'd like, as long as you follow the project
-requirements.
-
-Of course, you will update `lib/cli.py` with prompts that are appropriate for
-your application, and you will update `lib/helpers.py` to replace `helper_1()`
-with a useful function based on the specific problem domain you decide to
-implement, along with adding other helper functions to the module.
-
-In the `lib/models` folder, you should rename `model_1.py` with the name of a
-data model class from your specific problem domain, and add other classes to the
-folder as needed. The file `lib/models/__init__.py` has been initialized to
-create the necessary database constants. You need to add import statements to
-the various data model classes in order to use the database constants.
-
-You are also welcome to implement a different module and directory structure.
-However, your project should be well organized, modular, and follow the design
-principal of separation of concerns, which means you should separate code
-related to:
-
-- User interface
-- Data persistence
-- Problem domain rules and logic
-
----
-
-## Updating README.md
-
-`README.md` is a Markdown file that should describe your project. You will
-replace the contents of this `README.md` file with a description of **your**
-actual project.
-
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this assignments's resources for a basic guide to Markdown.
-
-### What Goes into a README?
-
-This README serves as a template. Replace the contents of this file to describe
-the important files in your project and describe what they do. Each Python file
-that you edit should get at least a paragraph, and each function should be
-described with a sentence or two.
-
-Describe your actual CLI script first, and with a good level of detail. The rest
-should be ordered by importance to the user. (Probably functions next, then
-models.)
-
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
-
----
-
-## Conclusion
-
-A lot of work goes into a good CLI, but it all relies on concepts that you've
-practiced quite a bit by now. Hopefully this template and guide will get you off
-to a good start with your Phase 3 Project.
-
-Happy coding!
-
----
-
-## Resources
-
-- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
+This project was created by Github users **vanessa-jesik** and **adgholson**. Contributions to this project are welcome! If you have ideas for improvements or feature additions, please open an issue or submit a pull request.

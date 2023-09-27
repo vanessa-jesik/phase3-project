@@ -37,6 +37,7 @@ Before running the project, ensure you have the following prerequisites installe
 1. Clone the repository to your local machine
 2. Change into the project directory
 3. Install the required Python packages
+4. Enter Python Shell
 
 ## Usage
 

@@ -14,14 +14,14 @@ def list_cookbooks():
         print(cookbook)
 
 
-def find_cookbook_by_name():  # Need to enter the entire name
-    name = input("Enter the Cookbooks's name: ").lower()
+def find_cookbook_by_name():
+    name = input("Enter the Cookbooks's name: ")
     cookbook = Cookbook.find_by_name(name)
     print(cookbook) if cookbook else print(f"Cookbook {name} not found")
 
 
 def find_cookbook_by_author():  # Need to enter the entire name
-    author = input("Enter the Author's name: ").lower()
+    author = input("Enter the Author's name: ")
     cookbook = Cookbook.find_by_author(author)
     print(cookbook) if cookbook else print(f"Cookbook by {author} not found")
 
@@ -86,7 +86,6 @@ def list_recipes():
         print(recipe)
 
 
-# Would be nice to make not case-sensitive and have partials work
 def find_recipe_by_name():
     name = input("Enter the recipe's name: ")
     recipe = Recipe.find_by_name(name)
@@ -99,7 +98,6 @@ def find_recipe_by_id():
     print(recipe) if recipe else print(f"Recipe {id_} not found.")
 
 
-# Would be nice to make not case-sensitive
 def find_recipes_by_cuisine():
     cuisine = input("Enter a cuisine type: ")
     recipes = Recipe.find_by_cuisine(cuisine)

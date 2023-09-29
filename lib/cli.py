@@ -67,6 +67,7 @@ def main():
 
 
 def menu():
+    print("*" * 50)
     print("Please select an option:")
     print("0. Exit the program")
     print("1. List all cookbooks")
@@ -86,6 +87,7 @@ def menu():
     print("15: Update recipe")
     print("16: Delete recipe")
     print("17. List all recipes in a cookbook")
+    print("*" * 50)
 
 
 if __name__ == "__main__":

@@ -75,6 +75,6 @@ def seed_database():
     Recipe.create("Slimeball Tea", "Minecraftian", 20, 1, minecraft_cookbook.id)
 
 
-    print("hi")
+
 seed_database()
 print("Seeded database")

@@ -43,10 +43,29 @@ class Cookbook:
     def pub_date(self, date_str):
         year, month, day = map(int, date_str.split("/"))
 
-        if isinstance(year, int) and isinstance(month, int) and isinstance(day, int):
-            self._pub_date = date_str
+        if not isinstance(year, int) or not len(str(year)) == 4 or not year > 1900:
+            raise Exception("Year must be a four digit integer greater than 1900.")
+        if (
+            not isinstance(month, int)
+            or not 1 <= len(str(month)) <= 2
+            or not 1 <= month <= 12
+        ):
+            raise Exception(
+                "Month must be a one or two digit integer between 1 and 12."
+            )
+        if (
+            not isinstance(day, int)
+            or not 1 <= len(str(day)) <= 2
+            or not 1 <= day <= 31
+        ):
+            raise Exception("Day must be a one or two digit integer between 1 and 31.")
         else:
-            raise Exception("Year, month, and day must be integers")
+            self._pub_date = date_str
+
+        # if isinstance(year, int) and isinstance(month, int) and isinstance(day, int):
+        #     self._pub_date = date_str
+        # else:
+        #     raise Exception("Year, month, and day must be integers")
 
     @classmethod
     def create_table(cls):
